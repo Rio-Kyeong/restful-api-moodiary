@@ -8,7 +8,6 @@ import com.rest.moodiary.dto.PostRequestSearchDto;
 import com.rest.moodiary.entity.Post;
 import com.rest.moodiary.entity.PostMood;
 import com.rest.moodiary.entity.QPost;
-import com.rest.moodiary.vo.PostAllVO;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;

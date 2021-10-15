@@ -8,7 +8,6 @@ import com.rest.moodiary.entity.Post;
 import com.rest.moodiary.entity.User;
 import com.rest.moodiary.exception.NotFoundException;
 import com.rest.moodiary.repository.PostRepository;
-import com.rest.moodiary.vo.PostAllVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
