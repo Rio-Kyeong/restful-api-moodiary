@@ -89,8 +89,22 @@ public class PostController {
         return ResponseEntity.ok(new PostDto(findPost));
     }
 
+    // 회원 전체 글 리스트 조회
+    @ApiOperation(value = "회원의 게시글 전체 조회", notes = "특정 회원의 게시글 리스트 조회")
+    @GetMapping("/posts/all/{userName}")
+    public Result findAll(@PathVariable("userName") String userName) {
+
+        List<Post> findAll = postService.findAll(userName);
+
+        List<PostAllListDto> listFindAll = findAll.stream()
+                .map(p -> new PostAllListDto(p))
+                .collect(Collectors.toList());
+
+        return new Result(listFindAll);
+    }
+
     // 날짜별 글 리스트 조회(페이징)
-    @ApiOperation(value = "게시글 전체 조회", notes = "해당 날짜의 게시글 리스트 조회(페이징)")
+    @ApiOperation(value = "날짜 별 게시글 전체 조회", notes = "해당 날짜의 게시글 리스트 조회(페이징)")
     @GetMapping("/posts")
     public Result findAll(
             @RequestParam(value = "offset", defaultValue = "0") int offset,
@@ -104,7 +118,7 @@ public class PostController {
         PostRequestAllDto request = new PostRequestAllDto(date, user.getUserName());
         PageDto page = new PageDto(offset, limit);
 
-        List<Post> findAll = postService.findAll(request, page);
+        List<Post> findAll = postService.findDateAll(request, page);
 
         // Entity 를 DTO 반환
         List<PostResponseListDto> listFindAll = findAll.stream()

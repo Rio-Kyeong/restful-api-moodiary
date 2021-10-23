@@ -42,8 +42,18 @@ public class PostRepository {
         return em.find(Post.class, id);
     }
 
+    // 회원 전체 글 리스트 조회
+    public List<Post> findAll(String userName){
+        return em.createQuery(
+                "select p from Post p" +
+                        " join fetch p.user" +
+                        " where p.user.userName = :userName", Post.class)
+                .setParameter("userName", userName)
+                .getResultList();
+    }
+
     // 날짜별 글 리스트 조회(페이징)
-    public List<Post> findAll(PostRequestAllDto request, PageDto page){
+    public List<Post> findDateAll(PostRequestAllDto request, PageDto page){
         return em.createQuery(
                 "select p from Post p " +
                         " join fetch p.user " +

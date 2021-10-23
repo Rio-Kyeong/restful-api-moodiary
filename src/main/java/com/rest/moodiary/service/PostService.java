@@ -66,14 +66,26 @@ public class PostService {
         return findPost;
     }
 
-    // 날짜별 글 리스트 조회(페이징)
+    // 회원 전체 글 리스트 조회
     @Transactional(readOnly = true)
-    public List<Post> findAll(PostRequestAllDto request, PageDto page){
+    public List<Post> findAll(String userName){
 
-        List<Post> findList = postRepository.findAll(request, page);
+        List<Post> findList = postRepository.findAll(userName);
 
         if(findList.isEmpty()){
-            throw new NotFoundException("등록한 게시글이 없습니다.");
+            throw new NotFoundException("작성된 게시글이 없습니다.");
+        }
+        return findList;
+    }
+
+    // 날짜별 글 리스트 조회(페이징)
+    @Transactional(readOnly = true)
+    public List<Post> findDateAll(PostRequestAllDto request, PageDto page){
+
+        List<Post> findList = postRepository.findDateAll(request, page);
+
+        if(findList.isEmpty()){
+            throw new NotFoundException("작성된 게시글이 없습니다.");
         }
         return findList;
     }

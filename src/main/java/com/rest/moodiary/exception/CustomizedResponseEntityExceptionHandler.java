@@ -39,6 +39,6 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(LocalDateTime.now(), ex.getMessage(), ((ServletWebRequest)request).getRequest().getRequestURI().toString());
 
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.METHOD_NOT_ALLOWED);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 }

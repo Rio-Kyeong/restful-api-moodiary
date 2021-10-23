@@ -5,21 +5,23 @@ import com.rest.moodiary.entity.PostMood;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(description = "날짜 별 게시글 리스트를 반환하는 DTO")
-public class PostResponseListDto {
+@ApiModel(description = "게시글 리스트를 반환하는 DTO")
+public class PostAllListDto {
 
     private Long postId;
     private String title;
-    private PostMood mood;
+    private LocalDate postDate;
 
-    public PostResponseListDto(Post post){
+    public PostAllListDto(Post post){
         this.postId = post.getPostId();
         this.title = post.getTitle();
-        this.mood = post.getMood();
+        this.postDate = post.getPostDate();
     }
 }
