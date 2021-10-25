@@ -3,8 +3,9 @@ package com.rest.moodiary.repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.rest.moodiary.dto.PageDto;
-import com.rest.moodiary.dto.PostRequestAllDto;
-import com.rest.moodiary.dto.PostRequestSearchDto;
+import com.rest.moodiary.dto.PostMonthDto;
+import com.rest.moodiary.dto.PostAllDto;
+import com.rest.moodiary.dto.PostSearchDto;
 import com.rest.moodiary.entity.Post;
 import com.rest.moodiary.entity.PostMood;
 import com.rest.moodiary.entity.QPost;
@@ -52,8 +53,20 @@ public class PostRepository {
                 .getResultList();
     }
 
+    // 월 별 글 리스트 조회
+    public List<Post> findMonthAll(PostMonthDto request){
+        return em.createQuery(
+                "select p from Post p" +
+                        " join fetch p.user"+
+                        " where p.user.userName = :userName and p.postDate between :startDate and :endDate", Post.class)
+                .setParameter("userName", request.getUsername())
+                .setParameter("startDate", request.getStartDate())
+                .setParameter("endDate", request.getEndDate())
+                .getResultList();
+    }
+
     // 날짜별 글 리스트 조회(페이징)
-    public List<Post> findDateAll(PostRequestAllDto request, PageDto page){
+    public List<Post> findDateAll(PostAllDto request, PageDto page){
         return em.createQuery(
                 "select p from Post p " +
                         " join fetch p.user " +
@@ -65,8 +78,9 @@ public class PostRepository {
                 .getResultList();
     }
 
+
     // 글 내용, 기분 조회(페이징)
-    public List<Post> findAllMood(PostRequestSearchDto postSearchDto, PageDto page){
+    public List<Post> findAllMood(PostSearchDto postSearchDto, PageDto page){
 
         JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(em);
         QPost post = QPost.post;

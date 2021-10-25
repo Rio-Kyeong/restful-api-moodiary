@@ -90,11 +90,14 @@ public class PostController {
     }
 
     // 회원 전체 글 리스트 조회
-    @ApiOperation(value = "회원의 게시글 전체 조회", notes = "특정 회원의 게시글 리스트 조회")
-    @GetMapping("/posts/all/{userName}")
-    public Result findAll(@PathVariable("userName") String userName) {
+    @ApiOperation(value = "회원의 게시글 전체 조회", notes = "회원의 게시글 리스트 조회")
+    @GetMapping("/posts")
+    public Result findAll() {
 
-        List<Post> findAll = postService.findAll(userName);
+        // 로그인 유저 확인
+        User user = userService.getMyUserWithAuthorities().get();
+
+        List<Post> findAll = postService.findAll(user.getUserName());
 
         List<PostAllListDto> listFindAll = findAll.stream()
                 .map(p -> new PostAllListDto(p))
@@ -103,10 +106,33 @@ public class PostController {
         return new Result(listFindAll);
     }
 
+    // 월 별 글 리스트 조회
+    @ApiOperation(value = "월 별 게시글 전체 조회", notes = "원하는 날짜 범위의 게시글 리스트 조회")
+    @GetMapping("/posts/month")
+    public Result findMonthAll(
+            @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
+            )
+    {
+        // 로그인 유저 확인
+        User user = userService.getMyUserWithAuthorities().get();
+
+        PostMonthDto request = new PostMonthDto(startDate, endDate, user.getUserName());
+
+        List<Post> findAll = postService.findMonthAll(request);
+
+        // Entity 를 DTO 반환
+        List<PostMonthListDto> listFindAll = findAll.stream()
+                .map(p -> new PostMonthListDto(p))
+                .collect(Collectors.toList());
+
+        return new Result(listFindAll);
+    }
+
     // 날짜별 글 리스트 조회(페이징)
     @ApiOperation(value = "날짜 별 게시글 전체 조회", notes = "해당 날짜의 게시글 리스트 조회(페이징)")
-    @GetMapping("/posts")
-    public Result findAll(
+    @GetMapping("/posts/date")
+    public Result findDateAll(
             @RequestParam(value = "offset", defaultValue = "0") int offset,
             @RequestParam(value = "limit", defaultValue = "10") int limit,
             @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
@@ -115,14 +141,14 @@ public class PostController {
         // 로그인 유저 확인
         User user = userService.getMyUserWithAuthorities().get();
 
-        PostRequestAllDto request = new PostRequestAllDto(date, user.getUserName());
+        PostAllDto request = new PostAllDto(date, user.getUserName());
         PageDto page = new PageDto(offset, limit);
 
         List<Post> findAll = postService.findDateAll(request, page);
 
         // Entity 를 DTO 반환
-        List<PostResponseListDto> listFindAll = findAll.stream()
-                .map(p -> new PostResponseListDto(p))
+        List<PostDateListDto> listFindAll = findAll.stream()
+                .map(p -> new PostDateListDto(p))
                 .collect(Collectors.toList());
 
         return new Result(listFindAll);
@@ -141,14 +167,14 @@ public class PostController {
         // 로그인 유저 확인
         User user = userService.getMyUserWithAuthorities().get();
 
-        PostRequestSearchDto postSearchDto = new PostRequestSearchDto(title, mood);
+        PostSearchDto postSearchDto = new PostSearchDto(title, mood);
         PageDto page = new PageDto(offset, limit);
 
         List<Post> searchList = postService.findAllMood(postSearchDto, page);
 
         // Entity 를 DTO 변환
-        List<PostResponseListDto> responseList = searchList.stream()
-                .map(p -> new PostResponseListDto(p))
+        List<PostSearchListDto> responseList = searchList.stream()
+                .map(p -> new PostSearchListDto(p))
                 .collect(Collectors.toList());
 
         return new Result(responseList);

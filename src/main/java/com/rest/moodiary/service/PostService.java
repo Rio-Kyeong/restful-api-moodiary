@@ -1,9 +1,6 @@
 package com.rest.moodiary.service;
 
-import com.rest.moodiary.dto.PageDto;
-import com.rest.moodiary.dto.PostRequestAllDto;
-import com.rest.moodiary.dto.PostRequestSearchDto;
-import com.rest.moodiary.dto.PostUpdateDto;
+import com.rest.moodiary.dto.*;
 import com.rest.moodiary.entity.Post;
 import com.rest.moodiary.entity.User;
 import com.rest.moodiary.exception.NotFoundException;
@@ -78,9 +75,21 @@ public class PostService {
         return findList;
     }
 
+    // 월 별 글 리스트 조회
+    @Transactional(readOnly = true)
+    public List<Post> findMonthAll(PostMonthDto request){
+
+        List<Post> findList = postRepository.findMonthAll(request);
+
+        if(findList.isEmpty()){
+            throw new NotFoundException("작성된 게시글이 없습니다.");
+        }
+        return findList;
+    }
+
     // 날짜별 글 리스트 조회(페이징)
     @Transactional(readOnly = true)
-    public List<Post> findDateAll(PostRequestAllDto request, PageDto page){
+    public List<Post> findDateAll(PostAllDto request, PageDto page){
 
         List<Post> findList = postRepository.findDateAll(request, page);
 
@@ -91,7 +100,7 @@ public class PostService {
     }
 
     // 글 내용, 기분 조회(페이징)
-    public List<Post> findAllMood(PostRequestSearchDto postSearchDto, PageDto page){
+    public List<Post> findAllMood(PostSearchDto postSearchDto, PageDto page){
 
         List<Post> searchList = postRepository.findAllMood(postSearchDto, page);
 
