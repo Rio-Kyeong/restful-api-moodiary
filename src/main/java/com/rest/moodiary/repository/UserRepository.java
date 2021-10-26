@@ -1,5 +1,6 @@
 package com.rest.moodiary.repository;
 
+import com.rest.moodiary.dto.PageDto;
 import com.rest.moodiary.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Repository;
@@ -27,8 +28,10 @@ public class UserRepository {
     }
 
     // 전체 회원 조회
-    public List<User> findAll(){
+    public List<User> findAll(PageDto page){
         return em.createQuery("select u from User u", User.class)
+                .setFirstResult(page.getOffset())
+                .setMaxResults(page.getLimit())
                 .getResultList();
     }
 

@@ -39,7 +39,7 @@ public class User {
 
     @JsonIgnore
     @Column(name = "activated")
-    @ApiModelProperty(notes = "활성화 여부(가입유저는 true)")
+    @ApiModelProperty(notes = "활성화 여부(탈퇴회원은 false)")
     private boolean activated;
 
             @ManyToMany
@@ -49,4 +49,16 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
             @ApiModelProperty(notes = "사용자 권한")
     private Set<Authority> authorities;
+
+    // 회원 수정
+    public void updateUser(String userName, String password){
+        this.userName = userName;
+        this.password = password;
+    }
+
+    // 회원 탈퇴
+    public void withdrawal(boolean activated){
+        this.activated = activated;
+    }
+
 }

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * 예외 응답 클래스
  */
 public class ExceptionResponse {
-    private LocalDateTime timestamp;
+    private String timestamp;
     private String message;
     private String details;
 }

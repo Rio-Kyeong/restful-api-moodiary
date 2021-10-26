@@ -19,7 +19,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public final ResponseEntity<ExceptionResponse> handleUserNotExceptions(Exception ex, WebRequest request){
 
         ExceptionResponse exceptionResponse =
-                new ExceptionResponse(LocalDateTime.now(), ex.getMessage(), ((ServletWebRequest)request).getRequest().getRequestURI().toString());
+                new ExceptionResponse(LocalDateTime.now().toString(), ex.getMessage(), ((ServletWebRequest)request).getRequest().getRequestURI().toString());
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
@@ -28,7 +28,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public final ResponseEntity<ExceptionResponse> handleUnauthorizedExceptions(Exception ex, WebRequest request){
 
         ExceptionResponse exceptionResponse =
-                new ExceptionResponse(LocalDateTime.now(), ex.getMessage(), ((ServletWebRequest)request).getRequest().getRequestURI().toString());
+                new ExceptionResponse(LocalDateTime.now().toString(), ex.getMessage(), ((ServletWebRequest)request).getRequest().getRequestURI().toString());
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
     }
@@ -37,7 +37,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public final ResponseEntity<ExceptionResponse> handleUserExceptions(Exception ex, WebRequest request){
 
         ExceptionResponse exceptionResponse =
-                new ExceptionResponse(LocalDateTime.now(), ex.getMessage(), ((ServletWebRequest)request).getRequest().getRequestURI().toString());
+                new ExceptionResponse(LocalDateTime.now().toString(), ex.getMessage(), ((ServletWebRequest)request).getRequest().getRequestURI().toString());
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }

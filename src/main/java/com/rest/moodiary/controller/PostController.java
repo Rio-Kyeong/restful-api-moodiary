@@ -191,13 +191,13 @@ public class PostController {
         return ResponseEntity.ok(new TimeDto(postService.getTime()));
     }
 
-    @Getter
     @Setter
-    @Builder
+    @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    @ApiModel(description = "List를 반환하면 배열 타입으로 나가서 유연성이 떨어지기 떄문에 컬렉션을 감싸 반환하는 제네릭 클래스")
-    static class Result<T> {
-        private T list;
+    @ApiModel(description = "게시글 아이디를 반환해주는 DTO")
+    static class PostIdDto {
+
+        private Long postId;
     }
 }

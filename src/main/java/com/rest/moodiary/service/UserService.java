@@ -1,5 +1,6 @@
 package com.rest.moodiary.service;
 
+import com.rest.moodiary.dto.PageDto;
 import com.rest.moodiary.dto.UserDto;
 import com.rest.moodiary.entity.Authority;
 import com.rest.moodiary.entity.User;
@@ -62,10 +63,68 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findOne(id);
 
         if(user == null){
-            throw new NotFoundException("회원이 존재하지 않습니다.");
+            throw new NotFoundException("회원을 찾을 수 없습니다.");
         }
 
         return user;
+    }
+
+    //회원 수정
+    @Transactional
+    public User updateUser(Long userId, UserDto userUpdateDto){
+
+        User findUser = userRepository.findOne(userId);
+
+        findUser.updateUser(userUpdateDto.getUserName(), passwordEncoder.encode(userUpdateDto.getPassword()));
+
+        return findUser;
+    }
+
+    //회원 탈퇴
+    @Transactional
+    public User withdrawal(Long userId){
+
+        User findUser = userRepository.findOne(userId);
+
+        findUser.withdrawal(false);
+
+        return findUser;
+    }
+
+    // 전체 회원 조회
+    @Transactional(readOnly = true)
+    public List<User> findAll(PageDto page){
+        List<User> findList = userRepository.findAll(page);
+
+        if(findList.isEmpty()){
+            throw new NotFoundException("회원을 찾을 수 없습니다.");
+        }
+
+        return findList;
+    }
+
+    // 로그인
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(final String username) {
+
+        return (UserDetails) userRepository.findOneWithAuthoritiesByUsername(username)
+                .map(user -> createUser(username, user))
+                .orElseThrow(() -> new NotFoundException(username + "님은 가입되지 않은 회원입니다."));
+    }
+
+    private org.springframework.security.core.userdetails.User createUser(String username, User user) {
+
+        if (!user.isActivated()) {
+            throw new NotFoundException("회원 탈퇴한 계정입니다.");
+        }
+
+        List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
+                .collect(Collectors.toList());
+        return new org.springframework.security.core.userdetails.User(user.getUserName(),
+                user.getPassword(),
+                grantedAuthorities);
     }
 
     // 로그인한 유저의 정보 검색(SecurityContext 에 저장된 username 의 정보 확인)
@@ -78,28 +137,4 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
-
-    // 로그인
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(final String username) {
-        return (UserDetails) userRepository.findOneWithAuthoritiesByUsername(username)
-                .map(user -> createUser(username, user))
-                .orElseThrow(() -> new NotFoundException(username + " 회원을 찾을 수 없습니다."));
-    }
-
-    private org.springframework.security.core.userdetails.User createUser(String username, User user) {
-
-        if (!user.isActivated()) {
-            throw new RuntimeException(username + " 활성화되어 있지 않습니다.");
-        }
-
-        List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
-                .collect(Collectors.toList());
-        return new org.springframework.security.core.userdetails.User(user.getUserName(),
-                user.getPassword(),
-                grantedAuthorities);
-    }
 }
-
