@@ -6,4 +6,4 @@
 ### swagger API with AWS EC2
 - <b><a href="http://3.143.218.178:9000/swagger-ui/index.html">swagger-ui/index.html</a></br>
 ### add more
-- <b><a href="https://www.notion.so/MooDiary-789936405015487381272015fae78536">moodiary.blog</a></br>
+- <b><a href="https://crystalline-airbus-a19.notion.site/MooDiary-789936405015487381272015fae78536">moodiary.blog</a></br>
