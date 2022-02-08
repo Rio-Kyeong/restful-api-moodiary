@@ -23,7 +23,6 @@ public class LogTraceAspect {
             String message = joinPoint.getSignature().toShortString();
             status = logTrace.begin(message);
 
-            //로직 호출
             Object result = joinPoint.proceed();
 
             logTrace.end(status);

@@ -9,7 +9,7 @@ public class FieldLogTrace implements LogTrace {
     private static final String COMPLETE_PREFIX = "<--";
     private static final String EX_PREFIX = "<X-";
 
-    private TraceId traceIdHolder; //동시성 이슈 발생
+    private TraceId traceIdHolder;
 
     @Override
     public TraceStatus begin(String message) {
