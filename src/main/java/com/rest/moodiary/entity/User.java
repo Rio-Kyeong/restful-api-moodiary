@@ -42,12 +42,12 @@ public class User {
     @ApiModelProperty(notes = "활성화 여부(탈퇴회원은 false)")
     private boolean activated;
 
-            @ManyToMany
-            @JoinTable(
-            name = "user_authority",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
-            @ApiModelProperty(notes = "사용자 권한")
+    @ManyToMany
+    @JoinTable(
+        name = "user_authority",
+        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+        inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+    @ApiModelProperty(notes = "사용자 권한")
     private Set<Authority> authorities;
 
     // 회원 수정
@@ -60,5 +60,4 @@ public class User {
     public void withdrawal(boolean activated){
         this.activated = activated;
     }
-
 }
