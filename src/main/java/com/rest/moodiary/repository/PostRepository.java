@@ -27,9 +27,7 @@ public class PostRepository {
 
     // 글 작성
     public Long save(Post post){
-
         em.persist(post);
-
         return post.getPostId();
     }
 
@@ -81,7 +79,6 @@ public class PostRepository {
 
     // 글 내용, 기분 조회(페이징)
     public List<Post> findAllMood(PostSearchDto postSearchDto, PageDto page){
-
         JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(em);
         QPost post = QPost.post;
 
