@@ -1,5 +1,8 @@
 # RESTful-API-Moodiary
 <b>Spring Boot, JPA를 이용한 하루의 일기와 기분을 기록하는 다이어리 API</b>
+## D**evelopment Environment**
+- **OS :** Window
+- **Tool :** IntelliJ IDEA, Postman
 ## moodiary API 1.0
 ### client-side development
 - <b><a href="https://github.com/oldSalao/moodiary">react-app/moodiary</a></br>
