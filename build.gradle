@@ -36,6 +36,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+
 	// JSON 을 다루는 라이브러리
 	// 미 추가 시 프론트단에서 415 Unsupported Media Type 상태코드가 발생할 수 있다.
 	implementation 'com.fasterxml.jackson.core:jackson-databind'

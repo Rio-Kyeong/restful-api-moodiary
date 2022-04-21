@@ -21,7 +21,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -48,9 +47,8 @@ public class UserController {
                 .toUri();
 
         User user = userService.findOne(id);
-        SignupDto signupDto = new SignupDto(user.getUserName(), user.getJoinDate());
 
-        return ResponseEntity.created(uri).body(signupDto);
+        return ResponseEntity.created(uri).body(new SignupDto(user.getUserName(), user.getJoinDate()));
     }
 
     // 로그인
@@ -64,6 +62,7 @@ public class UserController {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.createToken(authentication);
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
@@ -74,7 +73,7 @@ public class UserController {
     @ApiOperation(value = "로그인된 회원 정보", notes = "로그인된 회원정보를 반환")
     @GetMapping("/login")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<LoginUserDto> getMyUserInfo(HttpServletRequest request) throws NotFoundException {
+    public ResponseEntity<LoginUserDto> getMyUserInfo() throws NotFoundException {
 
         User user = userService.getMyUserWithAuthorities().get();
 

@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
@@ -31,7 +30,7 @@ public class PostController {
     // 글 작성
     @ApiOperation(value = "게시글 작성")
     @PostMapping("/posts")
-    public ResponseEntity<PostIdDto> savePost(@RequestBody @Valid PostUpdateDto postDto, HttpServletRequest request){
+    public ResponseEntity<PostIdDto> savePost(@RequestBody @Valid PostUpdateDto postDto){
 
         // 로그인 유저 확인
         User user = userService.getMyUserWithAuthorities().get();
