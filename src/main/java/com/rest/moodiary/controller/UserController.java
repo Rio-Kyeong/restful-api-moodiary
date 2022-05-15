@@ -7,8 +7,6 @@ import com.rest.moodiary.jwt.TokenProvider;
 import com.rest.moodiary.service.UserService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
-import javassist.NotFoundException;
-import javassist.bytecode.DuplicateMemberException;
 import lombok.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,7 +35,7 @@ public class UserController {
     // 회원가입
     @ApiOperation(value = "회원가입")
     @PostMapping("/join")
-    public ResponseEntity<SignupDto> signup(@Valid @RequestBody UserDto userDto) throws DuplicateMemberException {
+    public ResponseEntity<SignupDto> signup(@Valid @RequestBody UserDto userDto) {
 
         Long id = userService.signup(userDto);
 
@@ -73,7 +71,7 @@ public class UserController {
     @ApiOperation(value = "로그인된 회원 정보", notes = "로그인된 회원정보를 반환")
     @GetMapping("/login")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<LoginUserDto> getMyUserInfo() throws NotFoundException {
+    public ResponseEntity<LoginUserDto> getMyUserInfo() {
 
         User user = userService.getMyUserWithAuthorities().get();
 

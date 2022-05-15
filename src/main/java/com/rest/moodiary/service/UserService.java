@@ -35,7 +35,7 @@ public class UserService implements UserDetailsService {
 
     // 회원가입
     @Transactional
-    public Long signup(@Valid UserDto userDto) throws DuplicateMemberException {
+    public Long signup(@Valid UserDto userDto) {
 
         // 중복확인
         if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUserName()).orElse(null) != null) {
